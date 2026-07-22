@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Alert } from "react-native";
+import { View, Text, StyleSheet, Alert, FlatList } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
+import { Ionicons } from "@expo/vector-icons";
 
 const generateRandomNumber = (min, max, exclude) => {
   const randomNum = Math.floor(Math.random() * (max - min)) + min;
@@ -17,13 +18,15 @@ let maxBoundary = 100;
 
 export default function GameScreen({ userNumber, onGameOver }) {
   const initialGuess = generateRandomNumber(1, 100, userNumber);
-
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
+
+  const [guessRounds, setGuessRounds] = useState([initialGuess]);
+
   useEffect(() => {
     if (currentGuess === userNumber) {
-      onGameOver();
+      onGameOver(guessRounds);
     }
-  }, [currentGuess, userNumber, onGameOver]);
+  }, [currentGuess, userNumber, onGameOver, guessRounds]);
 
   function nextGuessHandler(direction) {
     if (
@@ -49,6 +52,7 @@ export default function GameScreen({ userNumber, onGameOver }) {
     );
 
     setCurrentGuess(newGuess);
+    setGuessRounds((prevGuessRounds) => [...prevGuessRounds, newGuess]);
   }
 
   return (
@@ -62,18 +66,35 @@ export default function GameScreen({ userNumber, onGameOver }) {
 
         <View style={styles.buttons}>
           <PrimaryButton onPress={() => nextGuessHandler("lower")}>
-            -
+            <Ionicons name="remove" size={24} color="white" />
           </PrimaryButton>
 
           <PrimaryButton onPress={() => nextGuessHandler("higher")}>
-            +
+            <Ionicons name="add" size={24} color="white" />
           </PrimaryButton>
         </View>
       </View>
 
-      <View style={styles.logContainer}>
-        <Text>Round Log</Text>
-      </View>
+      {/* <View style={styles.logContainer}>
+        <Text style={{ fontWeight: "bold", marginBottom: 10 }}>Round Log</Text>
+        {guessRounds?.map((guess, index) => (
+          <Text key={index}>
+            #{index + 1} - {guess}
+          </Text>
+        ))}
+      </View> */}
+
+      <FlatList
+        data={guessRounds}
+        inverted
+        renderItem={({ item, index }) => (
+          <View style={styles.logItem}>
+            <Text style={styles.question}># {index + 1} </Text>
+            <Text style={styles.gNum}>{item}</Text>
+          </View>
+        )}
+        keyExtractor={(item, index) => index.toString()}
+      />
     </View>
   );
 }
@@ -111,6 +132,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 20,
   },
+  gNum: {
+    color: "#ffffffaf",
+    fontSize: 30,
+    marginBottom: 20,
+    fontWeight: "bold",
+  },
 
   buttons: {
     flexDirection: "row",
@@ -119,5 +146,19 @@ const styles = StyleSheet.create({
 
   logContainer: {
     marginTop: 40,
+  },
+  logItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginVertical: 5,
+    padding: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    width: "100%",
+    flex: 1,
+    backgroundColor: "#e62b89dd",
+
+    textAlign: "center",
   },
 });

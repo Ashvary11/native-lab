@@ -13,12 +13,14 @@ export default function Index() {
   };
   const [number, setNumber] = useState(0);
   const [gameIsOver, setGameIsOver] = useState(false);
+  const [guessRounds, setGuessRounds] = useState<number[]>([]);
 
   let numberhandler = (pickedNumber: number) => {
     setNumber(pickedNumber);
     setGameIsOver(false);
   };
-  let gameOverHandler = () => {
+  let gameOverHandler = (guessRounds: number[]) => {
+    setGuessRounds(guessRounds);
     setGameIsOver(true);
   };
 
@@ -27,7 +29,7 @@ export default function Index() {
     screen = <GameScreen userNumber={number} onGameOver={gameOverHandler} />;
   }
   if (gameIsOver && number) {
-    screen = <GameOverScreen userNumber={number} />;
+    screen = <GameOverScreen userNumber={number} guessRounds={guessRounds}/>;
   }
   return (
     <LinearGradient
