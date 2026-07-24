@@ -1,10 +1,9 @@
 {
   "expo": {
-     "name": "Guess My Number",
+    "name": "Guess My Number",
     "slug": "guess-my-number",
     "version": "1.0.0",
     "orientation": "portrait",
-    // "icon": "",
     "scheme": "guessnumbergame",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -13,34 +12,16 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        // "foregroundImage": " ",
-        // "backgroundImage": " ",
-        // "monochromeImage": " "
+        "backgroundColor": "#E6F4FE"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "package": "com.ashvary.guessnumbergame"
     },
     "web": {
-      "output": "static",
-      // "favicon": " "
+      "output": "static"
     },
-    "plugins": [
-      "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          // "image": "",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff",
-          "dark": {
-            "backgroundColor": "#000000"
-          }
-        }
-      ]
-    ],
+    "plugins": ["expo-router"],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true

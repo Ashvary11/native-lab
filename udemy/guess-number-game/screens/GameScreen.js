@@ -4,6 +4,10 @@ import PrimaryButton from "../components/PrimaryButton";
 import { Ionicons } from "@expo/vector-icons";
 
 const generateRandomNumber = (min, max, exclude) => {
+  if (max - min <= 1) {
+    return min;
+  }
+
   const randomNum = Math.floor(Math.random() * (max - min)) + min;
 
   if (randomNum === exclude) {
@@ -17,8 +21,15 @@ let minBoundary = 1;
 let maxBoundary = 100;
 
 export default function GameScreen({ userNumber, onGameOver }) {
+  useEffect(() => {
+    minBoundary = 1;
+    maxBoundary = 100;
+  }, []);
+  
   const initialGuess = generateRandomNumber(1, 100, userNumber);
-  const [currentGuess, setCurrentGuess] = useState(initialGuess);
+  const [currentGuess, setCurrentGuess] = useState(() =>
+    generateRandomNumber(1, 100, userNumber),
+  );
 
   const [guessRounds, setGuessRounds] = useState([initialGuess]);
 
